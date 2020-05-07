@@ -1,0 +1,70 @@
+.tableRow {
+    td {
+        text-align: center;
+        padding: 5px 6px;
+        box-sizing: border-box;
+        max-width: 300px;
+    }
+
+
+    th {
+        text-align: center;
+        padding: 8px;
+    }
+
+    .td-left {
+        text-align: left !important;
+    }
+
+    .td-center {
+        text-align: center !important;
+    }
+
+    .td-right {
+        text-align: right !important;
+    }
+}
+
+tr {
+    background: #fff;
+}
+// 表格隔行变色
+tr:nth-child(even) {
+    background: #fafafa !important;
+}
+
+tr.tr-single-selected {
+    background-color: #1890ff !important;
+    color: #fff;
+
+    a {
+        color: #fff;
+    }
+}
+
+tr.tr-single-selected:hover {
+    td {
+        background-color: #1890ff !important;
+        color: rgba(0, 0, 0, 0.65);
+
+        a {
+            color: #1890ff;
+        }
+    }
+}
+
+.op-btn {
+    display: inline-block;
+    margin: 7.5px;
+    cursor: pointer;
+    // 强制单词断行
+    word-break: break-all;
+}
+
+.ant-table-fixed-header .ant-table-scroll .ant-table-header {
+    display: none !important;
+}
+
+.ant-table-fixed {
+    border-top: 1px solid #e8e8e8 !important;
+}

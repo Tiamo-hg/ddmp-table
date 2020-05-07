@@ -1,0 +1,14 @@
+<app-ddmp-table #ddmpTable
+  [chooseDataSet]="chooseDataSet" 
+  [tableConfig]="tableConfig" 
+  [dataSet]="dataSet" 
+  (optionEvent)="option($event)" 
+  (pageIndexChangeEvent)="pageIndexChange($event)"
+  (pageSizeChangeEvent)="pageSizeChange($event)"
+  (clickCheckAllEvent)="clickCheckAll($event)"
+  (clickCheckRowEvent)="clickCheckRow($event)"
+  (chooseRowEvent)="chooseRow($event)"
+  (dblChooseRowEvent)="dblChooseRow($event)"
+  (tdClickEvent)="tdClick($event)"
+  (pageDataChangeEvent)="pageDataChange($event)"
+  (sortEvent)="sort($event)"></app-ddmp-table>

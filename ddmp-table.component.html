@@ -1,0 +1,54 @@
+<nz-table #basicTable (nzCurrentPageDataChange)="currentPageDataChange($event)" [nzData]="dataSet" [nzBordered]="tableConfig.style.bordered"
+  [nzShowSizeChanger]="true" [nzPageSizeOptions]="tableConfig.pagination.pageSizeOptions" [(nzPageIndex)]="tableConfig.pagination.currentPage"
+  [(nzPageSize)]="tableConfig.pagination.pageSize" [nzTotal]="tableConfig.pagination.total" [nzShowTotal]="totalPage"
+  (nzPageIndexChange)="pageIndexChange($event)" (nzPageSizeChange)="pageSizeChange($event)" [nzSize]="tableConfig.style.size"
+  [nzNoResult]="tableConfig.style.noResult" [nzScroll]="tableConfig.style.scroll" [nzLoadingDelay]="tableConfig.style.loadingDelay"
+  [nzLoading]="tableConfig.style.loading"
+  [nzFrontPagination]="tableConfig.pagination.paginationType === 'FRONT'" [nzShowPagination]="tableConfig.pagination.paginationType !== 'NONE'"
+  [nzHideOnSinglePage]="tableConfig.style.nzHideOnSinglePage?tableConfig.style.nzHideOnSinglePage:false">
+  <thead (nzSortChange)="sort($event)" nzSingleSort>
+    <tr class="tableRow">
+      <th nzWidth="60px" [nzDisabled]="tableConfig.checkOptions.enabledCheckAll" nzShowCheckbox *ngIf="tableConfig.checkOptions.checkType === 'MUTI'"
+        [(nzChecked)]="tableConfig.checkOptions.checked" [nzIndeterminate]="tableConfig.checkOptions.indeterminate"
+        (nzCheckedChange)="checkAll($event)"></th>
+      <th nzWidth="60px" *ngIf="tableConfig.columnSet && tableConfig.style.hasIndex">序号</th>
+      <ng-container *ngFor="let column of tableConfig.columnSet">
+        <th *ngIf="column.sort === false || !column.sort" [ngClass]="{'td-left': column.position === 'left' , 'td-center': column.position === 'center' , 'td-right': column.position === 'right' }"
+        [nzWidth]="column.width">{{column.title}}</th>
+
+        <th *ngIf="column.sort === true" [ngClass]="{'td-left': column.position === 'left' , 'td-center': column.position === 'center' , 'td-right': column.position === 'right' }"
+        [nzWidth]="column.width" nzShowSort [nzSortKey]="column.property">{{column.title}}</th>
+      </ng-container>
+      <th nzWidth="90px" *ngIf="tableConfig.buttonOptions">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="tableRow" *ngFor="let data of basicTable.data; let rowIndex = index" (dblclick)="dblChooseSingleRow(data, rowIndex)" (click)="chooseSingleRow(data, rowIndex)"
+      [ngClass]="{'tr-single-selected': data.checked === true && tableConfig.checkOptions.checkType === 'SINGLE'}">
+      <td nzShowCheckbox *ngIf="tableConfig.checkOptions.checkType === 'MUTI'" [(nzChecked)]="data.checked"
+        (nzCheckedChange)="checkedRow(data, rowIndex, $event)"></td>
+      <td *ngIf="tableConfig.columnSet && tableConfig.style.hasIndex">{{((tableConfig.pagination.currentPage - 1) *
+        tableConfig.pagination.pageSize + rowIndex + 1)}}</td>
+      <ng-container *ngFor="let column of tableConfig.columnSet">
+        <td [ngClass]="{'td-left': column.position === 'left' , 'td-center': column.position === 'center' , 'td-right': column.position === 'right' }">
+          <span class="op-btn" (click)="tdClick(data, rowIndex, column.property)" *ngIf="column.type === 'link' "><a>{{data[column.property]}}</a></span>
+          <span class="op-btn" (click)="tdClick(data, rowIndex, column.property)" *ngIf="!column.type || column.type === 'default' ">{{data[column.property]}}</span>
+          <span class="op-btn" (click)="tdClick(data, rowIndex, column.property)" *ngIf="column.type === 'template' ">
+            <ng-container *ngTemplateOutlet="column.columnTemplate; context: {property: column.property ,data: data, rowIndex: rowIndex}"></ng-container>
+          </span>
+        </td>
+      </ng-container>
+      <td *ngIf="tableConfig.buttonOptions">
+        <ng-container *ngFor="let button of tableConfig.buttonOptions;">
+          <span *ngIf="containTag(data.options, button.tag)" (click)="chooseEvent(data, rowIndex, button.tag)" class="op-btn">
+            <i nz-icon type="{{button.icon}}" theme="{{button.outline}}"></i>
+          </span>
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<ng-template #totalPage>
+  共{{tableConfig.pagination.total}}条
+</ng-template>
